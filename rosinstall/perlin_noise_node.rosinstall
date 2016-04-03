@@ -1,0 +1,4 @@
+- git: 
+    local-name: perlin_noise_node
+    uri: 'https://github.com/jakedex/perlin_noise_node.git'
+    version: master

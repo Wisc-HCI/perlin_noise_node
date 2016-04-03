@@ -1,4 +1,4 @@
-node_example
+perlin_noise_node
 ============
 
-ROS node examples with parameter server, dynamic reconfigure, and custom messages.
+ROS node to interface with perlin_noise_filter
