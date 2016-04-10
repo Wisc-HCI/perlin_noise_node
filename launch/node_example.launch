@@ -1,30 +1,33 @@
 <!-- Starts up everything needed to run the example listener/talker nodes. -->
 <launch>
   <!-- The C++ talker node will publish a custom message. -->
-  <node pkg="node_example" type="talker" name="talker">
+  <node pkg="perlin_noise_node" type="talker" name="talker">
     <param name="a" value="1"/>
     <param name="b" value="2"/>
+    <param name="c" value="3"/>
     <param name="message" value="Hello from C++"/>
     <param name="rate" value="1"/>
     <remap from="example" to="chatter"/>
   </node>
 
+  <rosparam command="load" file="$(find perlin_noise_node)/launch/default.yaml" />
+
   <!-- The C++ listener node subscribes to the custom message that either talker is publishing. -->
-  <node pkg="node_example" type="listener" name="listener">
+  <node pkg="perlin_noise_node" type="listener" name="listener">
     <remap from="example" to="chatter"/>
   </node>
 
   <!-- The Python talker node will publish a custom message. -->
-  <node pkg="node_example" type="pytalker.py" name="pytalker">
+  <!-- <node pkg="perlin_noise_node" type="pytalker.py" name="pytalker">
     <param name="message" value="I am Python"/>
     <param name="rate" value="1"/>
     <remap from="example" to="chatter"/>
-  </node>
+  </node> -->
 
   <!-- The Python listener node subscribes to the custom message that either talker is publishing. -->
-  <node pkg="node_example" type="pylistener.py" name="pylistener">
+  <!-- <node pkg="perlin_noise_node" type="pylistener.py" name="pylistener">
     <remap from="example" to="chatter"/>
-  </node>
+  </node> -->
 
-  <include file="$(find node_example)/launch/tools.launch"/>
+  <!-- <include file="$(find perlin_noise_node)/launch/tools.launch"/> -->
 </launch>

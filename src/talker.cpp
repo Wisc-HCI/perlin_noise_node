@@ -3,10 +3,11 @@
 namespace node_example
 {
 
-
-
 ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
-  a_(1), b_(2), message_("hello")
+    a_(1),
+    b_(2),
+    message_("hello"),
+    filter_chain("double")
 {
 
   // Set up a dynamic reconfigure server.
@@ -31,14 +32,43 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
 
   // Create timer.
   timer_ = nh.createTimer(ros::Duration(1 / rate), &ExampleTalker::timerCallback, this);
+
+  if(filter_chain.configure("perlin_params")) {
+    ROS_INFO("configured sucessfully");
+  } else {
+    ROS_INFO("configured unsucessfully");
+  }
+
+  double filt_in = 0.9;
+  double filt_out = 9;
+
+  if(filter_chain.update(filt_in, filt_out)) {
+    ROS_INFO("updated sucessfully");
+  } else {
+    ROS_INFO("updated unsucessfully");
+  }
+  ROS_INFO("filt_in is: %f", filt_in);
+  ROS_INFO("filt_out is: %f", filt_out);
+
 }
 
 void ExampleTalker::timerCallback(const ros::TimerEvent& event)
 {
-    double result = 999;
+  // double input = 0;
+  // double result = 999;
+  // ROS_INFO("before update, result is: %f", result);
+  // if(filter_chain.update(input, result)) {
+  //   ROS_INFO("update successful");
+  // } else {
+  //   ROS_INFO("update unsuccessful");
+  // }
+
   node_example::NodeExampleData msg;
   msg.message = message_;
-  msg.a = result;
+
+  // ROS_INFO("post update, result is: %f", result);
+
+  msg.a = 0;
   msg.b = b_;
 
   pub_.publish(msg);

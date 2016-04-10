@@ -13,8 +13,10 @@
 // Auto-generated from cfg/ directory.
 #include <node_example/nodeExampleConfig.h>
 
-// Filter includes 
-#include "perlin_noise_filter/perlin_noise.h"
+// Filter includes
+#include "ros/ros.h"
+#include "perlin_noise_filter/perlin_noise_filter.h"
+#include "filters/filter_chain.h"
 
 namespace node_example
 {
@@ -32,6 +34,9 @@ public:
   void timerCallback(const ros::TimerEvent& event);
 
 private:
+  //! Filter Chain
+  filters::FilterChain<double> filter_chain;
+
   //! The timer variable used to go to callback function at specified rate.
   ros::Timer timer_;
 

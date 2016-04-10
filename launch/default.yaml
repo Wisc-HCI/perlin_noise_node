@@ -1,0 +1,3 @@
+perlin_params:
+    - name: perlin_noise_filter_chain
+      type: PerlinNoiseDouble
