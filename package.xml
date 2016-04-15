@@ -12,12 +12,8 @@
   <url>https://github.com/tdenewiler/node_example</url>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>message_generation</build_depend>
-  <exec_depend>message_runtime</exec_depend>
-  <depend>dynamic_reconfigure</depend>
   <depend>perlin_noise_filter</depend>
   <depend>roscpp</depend>
   <depend>filters</depend>
-  <depend>rospy</depend>
   <depend>std_msgs</depend>
 </package>
