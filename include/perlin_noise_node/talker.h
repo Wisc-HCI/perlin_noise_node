@@ -6,6 +6,7 @@
 #include "ros/time.h"
 
 // Filter includes
+#include <vector>
 #include "perlin_noise_filter/perlin_noise_filter.h"
 #include "filters/filter_chain.h"
 
@@ -23,7 +24,7 @@ public:
 
 private:
   //! Filter Chain
-  filters::FilterChain<double> filter_chain;
+  filters::MultiChannelFilterChain<double> filter_chain_;
 
   //! The timer variable used to go to callback function at specified rate.
   ros::Timer timer_;
