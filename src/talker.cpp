@@ -21,19 +21,13 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
   // Create timer.
   timer_ = nh.createTimer(ros::Duration(1 / rate), &ExampleTalker::timerCallback, this);
 
+  // Create filter i/o vectors
   filter_chain_.configure(3, "perlin_params");
 
-  // double filt_in = 0.9;
-  // double filt_out = 9;
-  std::vector<double> filt_in;
-  filt_in.push_back(.9);
-  filt_in.push_back(0);
-  filt_in.push_back(0);
+  double temp[] = {.9, 0, 0};
+  std::vector<double> filt_in (temp, temp + sizeof(temp) / sizeof(double) );
 
-  std::vector<double> filt_out;
-  filt_in.push_back(-1);
-  filt_in.push_back(-1);
-  filt_in.push_back(-1);
+  std::vector<double> filt_out (3, 0);
 
 
   if(filter_chain_.update(filt_in, filt_out)) {
@@ -41,8 +35,10 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
   } else {
     ROS_INFO("updated unsucessfully");
   }
-  ROS_INFO("filt_in is: %f", filt_in);
-  ROS_INFO("filt_out is: %f", filt_out);
+  ROS_INFO("filt_in[0] is: %f\n", filt_in[0]);
+  ROS_INFO("filt_in[1] is: %f\n", filt_in[1]);
+  ROS_INFO("filt_in[2] is: %f\n", filt_in[2]);
+  ROS_INFO("filt_out is: %f", filt_out[0]);
 
 }
 
