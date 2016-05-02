@@ -6,10 +6,10 @@
     using the parameter server and dynamic reconfigure and custom messages.
     Examples for Python and C++.
   </description>
-  <author>Thomas Denewiler</author>
-  <maintainer email="tdenewiler@gmail.com">Thomas Denewiler</maintainer>
+  <author>Jake Dexheimer</author>
+  <maintainer email="jdexheimer@wisc.edu">Jake Dexheimer</maintainer>
   <license>BSD</license>
-  <url>https://github.com/tdenewiler/node_example</url>
+  <url>https://github.com/jakedex/perlin_noise_node</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>perlin_noise_filter</depend>

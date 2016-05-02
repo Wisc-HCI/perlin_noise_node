@@ -7,5 +7,4 @@ msg_gen
 srv_gen
 cfg/*.cfgc
 cfg/cpp
-src/node_example
 *.h.gch

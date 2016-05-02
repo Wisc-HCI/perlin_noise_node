@@ -38,12 +38,9 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(talker src/talker.cpp src/nodes/talker_node.cpp)
-target_link_libraries(talker ${catkin_LIBRARIES})
-#add_dependencies(talker node_example_gencfg node_example_generate_messages_cpp)
-# add_executable(listener src/listener.cpp src/nodes/listener_node.cpp)
-# target_link_libraries(listener ${catkin_LIBRARIES})
-#add_dependencies(listener node_example_gencfg node_example_generate_messages_cpp)
+add_executable(pn_gen src/pn_gen.cpp src/pn_gen_node.cpp)
+target_link_libraries(pn_gen ${catkin_LIBRARIES})
+#add_dependencies(pn_gen node_example_gencfg node_example_generate_messages_cpp)
 
 ##############################################################################
 # Install
@@ -55,13 +52,13 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
 )
 
-# install(TARGETS talker listener
+# install(TARGETS pn_gen listener
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 # )
 
-install(TARGETS talker
+install(TARGETS pn_gen
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

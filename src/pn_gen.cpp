@@ -1,9 +1,9 @@
-#include "perlin_noise_node/talker.h"
+#include "perlin_noise_node/pn_gen.h"
 
-namespace node_example
+namespace perlin_noise_node
 {
 
-ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
+PerlinNode::PerlinNode(ros::NodeHandle nh) :
     filter_chain_("double")
 {
 
@@ -23,13 +23,13 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
 
   // Create a subscriber.
   // Name the topic, message queue, callback function with class name, and object containing callback function.
-  // sub_ = nh.subscribe("/joint_states", 1, &ExampleTalker::messageCallback, this);
+  // sub_ = nh.subscribe("/joint_states", 1, &PerlinNode::messageCallback, this);
 
   // Count sub's CB calls, only act on every 100th for nao
   msgHits_ = 0;
 
   // Create timer.
-  timer_ = nh.createTimer(ros::Duration(.5), &ExampleTalker::timerCallback, this);
+  timer_ = nh.createTimer(ros::Duration(.5), &PerlinNode::timerCallback, this);
 
   // Create filter i/o vectors
   filter_chain_.configure(3, "perlin_params");
@@ -50,7 +50,7 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
 
 }
 
-void ExampleTalker::messageCallback(const sensor_msgs::JointState::ConstPtr & msg)
+void PerlinNode::messageCallback(const sensor_msgs::JointState::ConstPtr & msg)
 {
 
   // if (msgHits_ == 100) {
@@ -83,12 +83,6 @@ void ExampleTalker::messageCallback(const sensor_msgs::JointState::ConstPtr & ms
 
   for(int i = 0; i < paramNames_.size(); i++) {
 
-    // int ind = 0;
-    // std::size_t found = std::find(jointAngles.joint_names.begin(), jointAngles.joint_names.end(), paramNames[i]); // replace with if(joint.perlin)
-    // if (found != jointAngles.joint_names.end()) {
-    //    ind = std::distance(jointAngles.joint_names.begin(), found);
-    // }
-
     perlinParam_[i] += 0.01;
 
     filt_in[0] = perlinOffset_[i] * perlinParam_[i];
@@ -114,7 +108,7 @@ void ExampleTalker::messageCallback(const sensor_msgs::JointState::ConstPtr & ms
   ROS_INFO("message is published");
 }
 
-void ExampleTalker::timerCallback(const ros::TimerEvent& event)
+void PerlinNode::timerCallback(const ros::TimerEvent& event)
 {
   // ROS_INFO("toPublish size: %lu", toPublish_.size());
   //

@@ -1,31 +1,32 @@
-#ifndef NODE_EXAMPLE_TALKER_H
-#define NODE_EXAMPLE_TALKER_H
+#ifndef PERLIN_NOISE_NODE_PN_GEN_H
+#define PERLIN_NOISE_NODE_PN_GEN_H
 
 // ROS includes.
 #include "ros/ros.h"
 #include "ros/time.h"
 
 // Filter includes
-#include <vector>
 #include "perlin_noise_filter/perlin_noise_filter.h"
 #include "filters/filter_chain.h"
+
+// Node includes
 #include <sensor_msgs/JointState.h>
 #include <naoqi_bridge_msgs/JointAnglesWithSpeed.h>
-#include <algorithm>    // std::find
-#include <iterator>     // std::distance
+
+// C/C++ includes
 #include <cstdlib>       // std::rand
+#include <vector>
 #include <time.h>
-#include <stack>
 #include <string>
 
-namespace node_example
+namespace perlin_noise_node
 {
 
-class ExampleTalker
+class PerlinNode
 {
 public:
   //! Constructor.
-  ExampleTalker(ros::NodeHandle nh);
+  PerlinNode(ros::NodeHandle nh);
 
   //! Callback function for subscriber.
   void messageCallback(const sensor_msgs::JointState::ConstPtr &msg);
@@ -49,9 +50,6 @@ private:
   //! Joint_states Message counter
   int msgHits_;
 
-  //! Publishing queue for consistant timing
-  std::stack<naoqi_bridge_msgs::JointAnglesWithSpeed> toPublish_;
-
   std::vector<std::string> paramNames_;
 
   std::vector<double> perlinOffset_;
@@ -61,4 +59,4 @@ private:
 
 }
 
-#endif // NODE_EXAMPLE_TALKER_H
+#endif // PERLIN_NOISE_NODE_PN_GEN_H

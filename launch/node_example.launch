@@ -1,17 +1,13 @@
-<!-- Starts up everything needed to run the example listener/talker nodes. -->
+<!-- Starts up everything needed to run perlin_noise_node. -->
 <launch>
-  <!-- The C++ talker node will publish a custom message. -->
-  <node pkg="perlin_noise_node" type="talker" name="talker">
+  <!-- The C++ pn_gen node will publish a message with perlinized motion. -->
+  <node pkg="perlin_noise_node" type="pn_gen" name="pn_gen">
     <param name="rate" value="1"/>
     <remap from="example" to="chatter"/>
   </node>
 
+  <!-- Load default values into Filter Chain. Add additional/custom robot launch configs below -->
   <rosparam command="load" file="$(find perlin_noise_node)/launch/default.yaml" />
-
-  <!-- The C++ listener node subscribes to the custom message that either talker is publishing. -->
-  <!-- <node pkg="perlin_noise_node" type="listener" name="listener">
-    <remap from="example" to="chatter"/>
-  </node> -->
 
   <!-- <include file="$(find perlin_noise_node)/launch/tools.launch"/> -->
 </launch>
