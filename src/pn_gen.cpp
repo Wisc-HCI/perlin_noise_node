@@ -6,6 +6,7 @@ namespace perlin_noise_node
 PerlinNode::PerlinNode(ros::NodeHandle nh) :
     filter_chain_("double")
 {
+  // TODO remove toPublish_ after further confirmation that stack isn't needed
 
   // Declare variables that can be modified by launch file or command line.
   int rate;
@@ -70,42 +71,42 @@ void PerlinNode::messageCallback(const sensor_msgs::JointState::ConstPtr & msg)
   // - sub, pub topics
   // videos of nao,
 
-  int nameSize = 26;
-  std::vector<std::string> name (msg->name);
-  std::vector<float> joint_angles (nameSize, 0);
-
-  naoqi_bridge_msgs::JointAnglesWithSpeed jointAngles;
-  jointAngles.joint_names = name;
-  jointAngles.joint_angles = joint_angles;
-
-  std::vector<double> filt_in (3, 0);
-  std::vector<double> filt_out (3, -1);
-
-  for(int i = 0; i < paramNames_.size(); i++) {
-
-    perlinParam_[i] += 0.01;
-
-    filt_in[0] = perlinOffset_[i] * perlinParam_[i];
-
-
-
-    if(filter_chain_.update(filt_in, filt_out)) {
-      ROS_INFO("updated sucessfully");
-    } else {
-      ROS_INFO("updated unsucessfully");
-    }
-
-    jointAngles.joint_angles[i] = filt_out[0];
-  }
-
-  jointAngles.speed = .075;
-  jointAngles.relative = 1;
-
-  //pub_.publish(jointAngles);
-
-  toPublish_.push(jointAngles);
-
-  ROS_INFO("message is published");
+  // int nameSize = 26;
+  // std::vector<std::string> name (msg->name);
+  // std::vector<float> joint_angles (nameSize, 0);
+  //
+  // naoqi_bridge_msgs::JointAnglesWithSpeed jointAngles;
+  // jointAngles.joint_names = name;
+  // jointAngles.joint_angles = joint_angles;
+  //
+  // std::vector<double> filt_in (3, 0);
+  // std::vector<double> filt_out (3, -1);
+  //
+  // for(int i = 0; i < paramNames_.size(); i++) {
+  //
+  //   perlinParam_[i] += 0.01;
+  //
+  //   filt_in[0] = perlinOffset_[i] * perlinParam_[i];
+  //
+  //
+  //
+  //   if(filter_chain_.update(filt_in, filt_out)) {
+  //     ROS_INFO("updated sucessfully");
+  //   } else {
+  //     ROS_INFO("updated unsucessfully");
+  //   }
+  //
+  //   jointAngles.joint_angles[i] = filt_out[0];
+  // }
+  //
+  // jointAngles.speed = .075;
+  // jointAngles.relative = 1;
+  //
+  // //pub_.publish(jointAngles);
+  //
+  // toPublish_.push(jointAngles);
+  //
+  // ROS_INFO("message is published");
 }
 
 void PerlinNode::timerCallback(const ros::TimerEvent& event)
