@@ -23,10 +23,13 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
 
   // Create a subscriber.
   // Name the topic, message queue, callback function with class name, and object containing callback function.
-  sub_ = nh.subscribe("/joint_states", 1, &ExampleTalker::messageCallback, this);
+  // sub_ = nh.subscribe("/joint_states", 1, &ExampleTalker::messageCallback, this);
+
+  // Count sub's CB calls, only act on every 100th for nao
+  msgHits_ = 0;
 
   // Create timer.
-  // timer_ = nh.createTimer(ros::Duration(1 / rate), &ExampleTalker::timerCallback, this);
+  timer_ = nh.createTimer(ros::Duration(.5), &ExampleTalker::timerCallback, this);
 
   // Create filter i/o vectors
   filter_chain_.configure(3, "perlin_params");
@@ -34,8 +37,6 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
   // TODO these will eventually be read in from paramServer
   paramNames_.push_back("HeadYaw");
   paramNames_.push_back("HeadPitch");
-  paramNames_.push_back("LShoulderPitch");
-  paramNames_.push_back("LShoulderRoll");
 
   perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
   perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
@@ -51,6 +52,14 @@ ExampleTalker::ExampleTalker(ros::NodeHandle nh) :
 
 void ExampleTalker::messageCallback(const sensor_msgs::JointState::ConstPtr & msg)
 {
+
+  // if (msgHits_ == 100) {
+  //   msgHits_ = 0;
+  // } else {
+  //   msgHits_++;
+  //   return;
+  // }
+
   // TODO eventually need seperate class to handle Update.
   // nao implementation needs class obj for each given param (joint name)
   // obj will have:
@@ -59,7 +68,7 @@ void ExampleTalker::messageCallback(const sensor_msgs::JointState::ConstPtr & ms
   // each robot's conf will need:
   // - sizeof(name)
   // - sub, pub topics
-  // videos of nao, 
+  // videos of nao,
 
   int nameSize = 26;
   std::vector<std::string> name (msg->name);
@@ -80,9 +89,11 @@ void ExampleTalker::messageCallback(const sensor_msgs::JointState::ConstPtr & ms
     //    ind = std::distance(jointAngles.joint_names.begin(), found);
     // }
 
+    perlinParam_[i] += 0.01;
+
     filt_in[0] = perlinOffset_[i] * perlinParam_[i];
 
-    perlinParam_[i] += 0.01;
+
 
     if(filter_chain_.update(filt_in, filt_out)) {
       ROS_INFO("updated sucessfully");
@@ -93,33 +104,65 @@ void ExampleTalker::messageCallback(const sensor_msgs::JointState::ConstPtr & ms
     jointAngles.joint_angles[i] = filt_out[0];
   }
 
-  jointAngles.speed = 1;
+  jointAngles.speed = .075;
   jointAngles.relative = 1;
 
-  pub_.publish(jointAngles);
+  //pub_.publish(jointAngles);
+
+  toPublish_.push(jointAngles);
 
   ROS_INFO("message is published");
 }
 
 void ExampleTalker::timerCallback(const ros::TimerEvent& event)
 {
-  // double input = 0;
-  // double result = 999;
-  // ROS_INFO("before update, result is: %f", result);
-  // if(filter_chain.update(input, result)) {
-  //   ROS_INFO("update successful");
-  // } else {
-  //   ROS_INFO("update unsuccessful");
+  // ROS_INFO("toPublish size: %lu", toPublish_.size());
+  //
+  // if(toPublish_.empty()){
+  //   return;
   // }
+  //
+  // pub_.publish(toPublish_.top());
+  // toPublish_.pop();
 
-  // node_example::NodeExampleData msg;
-  // msg.message = message_;
+  int nameSize = 26;
+  std::string x[26] = {"HeadYaw", "HeadPitch", "LShoulderPitch",
+  "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw",
+  "LHand", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch",
+   "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch",
+    "RKneePitch", "RAnklePitch", "RAnkleRoll", "RShoulderPitch",
+     "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"};
+  std::vector<std::string> name(x, x + sizeof(x)/sizeof(x[0]));
+  std::vector<float> joint_angles (nameSize, 0);
 
-  // ROS_INFO("post update, result is: %f", result);
+  naoqi_bridge_msgs::JointAnglesWithSpeed jointAngles;
+  jointAngles.joint_names = name;
+  jointAngles.joint_angles = joint_angles;
 
-  // msg.a = 0;
-  // msg.b = b_;
+  std::vector<double> filt_in (3, 0);
+  std::vector<double> filt_out (3, -1);
 
-  // pub_.publish(msg);
+  for(int i = 0; i < paramNames_.size(); i++) {
+
+    filt_in[0] = perlinOffset_[i] + perlinParam_[i];
+    perlinParam_[i] += 0.01;
+
+    if(filter_chain_.update(filt_in, filt_out)) {
+      ROS_INFO("updated sucessfully");
+    } else {
+      ROS_INFO("updated unsucessfully");
+    }
+
+    jointAngles.joint_angles[i] = filt_out[0] * .25;
+  }
+
+  jointAngles.speed = .05;
+  jointAngles.relative = 1;
+
+  pub_.publish(jointAngles);
+
+  // toPublish_.push(jointAngles);
+
+  ROS_INFO("message is published");
 }
 }

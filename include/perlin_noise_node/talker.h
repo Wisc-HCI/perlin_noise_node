@@ -15,6 +15,8 @@
 #include <iterator>     // std::distance
 #include <cstdlib>       // std::rand
 #include <time.h>
+#include <stack>
+#include <string>
 
 namespace node_example
 {
@@ -43,6 +45,12 @@ private:
 
   //! Subscriber
   ros::Subscriber sub_;
+
+  //! Joint_states Message counter
+  int msgHits_;
+
+  //! Publishing queue for consistant timing
+  std::stack<naoqi_bridge_msgs::JointAnglesWithSpeed> toPublish_;
 
   std::vector<std::string> paramNames_;
 
