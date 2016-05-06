@@ -10,7 +10,6 @@
 #include "filters/filter_chain.h"
 
 // Node includes
-#include <sensor_msgs/JointState.h>
 #include <naoqi_bridge_msgs/JointAnglesWithSpeed.h>
 
 // C/C++ includes
@@ -28,9 +27,6 @@ public:
   //! Constructor.
   PerlinNode(ros::NodeHandle nh);
 
-  //! Callback function for subscriber.
-  void messageCallback(const sensor_msgs::JointState::ConstPtr &msg);
-
   //! Timer callback for publishing message.
   void timerCallback(const ros::TimerEvent& event);
 
@@ -43,12 +39,6 @@ private:
 
   //! Message publisher
   ros::Publisher pub_;
-
-  //! Subscriber
-  ros::Subscriber sub_;
-
-  //! Joint_states Message counter
-  int msgHits_;
 
   std::vector<std::string> paramNames_;
 

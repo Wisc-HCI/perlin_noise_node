@@ -3,7 +3,6 @@
   <!-- The C++ pn_gen node will publish a message with perlinized motion. -->
   <node pkg="perlin_noise_node" type="pn_gen" name="pn_gen">
     <param name="rate" value="1"/>
-    <remap from="example" to="chatter"/>
   </node>
 
   <!-- Load default values into Filter Chain. Add additional/custom robot launch configs below -->
