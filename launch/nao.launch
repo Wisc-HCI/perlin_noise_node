@@ -1,7 +1,7 @@
 <!-- Starts up everything needed to run perlin_noise_node. -->
 <launch>
-  <!-- The C++ pn_gen node will publish a message with perlinized motion. -->
-  <node pkg="perlin_noise_node" type="pn_gen" name="pn_gen">
+  <!-- The C++ nao_pn_gen node will publish a message with perlinized motion. -->
+  <node pkg="perlin_noise_node" type="nao_pn_gen" name="nao_pn_gen">
     <rosparam command="load" file="$(find perlin_noise_node)/launch/nao.yaml" />
   </node>
 

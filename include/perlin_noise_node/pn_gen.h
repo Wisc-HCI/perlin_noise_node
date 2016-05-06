@@ -9,15 +9,11 @@
 #include "perlin_noise_filter/perlin_noise_filter.h"
 #include "filters/filter_chain.h"
 
-// Node includes
-#include <naoqi_bridge_msgs/JointAnglesWithSpeed.h>
-
 // C/C++ includes
 #include <cstdlib>       // std::rand
 #include <vector>
 #include <time.h>
 #include <string>
-#include <XmlRpcValue.h>
 
 namespace perlin_noise_node
 {
@@ -28,10 +24,13 @@ public:
   //! Constructor.
   PerlinNode(ros::NodeHandle nh);
 
-  //! Timer callback for publishing message.
-  void timerCallback(const ros::TimerEvent& event);
+  //! Intialize everything specific to this robot
+  virtual void init() = 0;
 
-private:
+  //! Timer callback for publishing message.
+  virtual void timerCallback(const ros::TimerEvent& event) = 0;
+
+protected:
   //! Filter Chain
   filters::MultiChannelFilterChain<double> filter_chain_;
 

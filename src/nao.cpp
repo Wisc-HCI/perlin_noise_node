@@ -1,4 +1,4 @@
-#include "perlin_noise_node/pn_gen.h"
+#include "perlin_noise_node/nao.h"
 
 namespace perlin_noise_node
 {
@@ -8,8 +8,6 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
 {
 
   // Declare variables that can be modified by launch file or command line.
-  //
-  int rate;
   // Frequency of message publishing (seconds), default .5
   double freq;
 
@@ -43,6 +41,11 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
   perlin_param_.push_back(0);
   perlin_param_.push_back(0);
   perlin_param_.push_back(0);
+
+}
+
+void PerlinNode::init()
+{
 
 }
 

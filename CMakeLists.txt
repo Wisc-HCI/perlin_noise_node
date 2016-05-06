@@ -38,9 +38,9 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(pn_gen src/pn_gen.cpp src/pn_gen_node.cpp)
-target_link_libraries(pn_gen ${catkin_LIBRARIES})
-#add_dependencies(pn_gen node_example_gencfg node_example_generate_messages_cpp)
+add_executable(nao src/nao.cpp src/nao_node.cpp)
+target_link_libraries(nao ${catkin_LIBRARIES})
+#add_dependencies(nao node_example_gencfg node_example_generate_messages_cpp)
 
 ##############################################################################
 # Install
@@ -52,13 +52,13 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
 )
 
-# install(TARGETS pn_gen listener
+# install(TARGETS nao listener
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 # )
 
-install(TARGETS pn_gen
+install(TARGETS nao
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

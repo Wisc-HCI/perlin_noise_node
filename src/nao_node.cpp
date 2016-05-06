@@ -1,4 +1,4 @@
-#include "perlin_noise_node/pn_gen.h"
+#include "perlin_noise_node/nao.h"
 
 int main(int argc, char **argv)
 {
