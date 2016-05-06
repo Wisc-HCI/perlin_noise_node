@@ -8,7 +8,7 @@
   </description>
   <author>Jake Dexheimer</author>
   <maintainer email="jdexheimer@wisc.edu">Jake Dexheimer</maintainer>
-  <license>BSD</license>
+  <license>MIT</license>
   <url>https://github.com/jakedex/perlin_noise_node</url>
 
   <buildtool_depend>catkin</buildtool_depend>

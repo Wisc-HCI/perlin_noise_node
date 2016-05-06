@@ -36,8 +36,11 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
   filter_chain_.configure(3, "perlin_params");
 
   // TODO these will eventually be read in from paramServer
-  paramNames_.push_back("HeadYaw");
-  paramNames_.push_back("HeadPitch");
+  // paramNames_.push_back("HeadYaw");
+  // paramNames_.push_back("HeadPitch");
+  paramNames_.push_back("LShoulderPitch");
+  paramNames_.push_back("LShoulderRoll");
+
 
   perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
   perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
@@ -140,7 +143,7 @@ void PerlinNode::timerCallback(const ros::TimerEvent& event)
   for(int i = 0; i < paramNames_.size(); i++) {
 
     filt_in[0] = perlinOffset_[i] + perlinParam_[i];
-    perlinParam_[i] += 0.01;
+    perlinParam_[i] += 1.1;
 
     if(filter_chain_.update(filt_in, filt_out)) {
       ROS_INFO("updated sucessfully");
@@ -148,10 +151,10 @@ void PerlinNode::timerCallback(const ros::TimerEvent& event)
       ROS_INFO("updated unsucessfully");
     }
 
-    jointAngles.joint_angles[i] = filt_out[0] * .25;
+    jointAngles.joint_angles[i+2] = filt_out[0] * .75;
   }
 
-  jointAngles.speed = .05;
+  jointAngles.speed = .025;
   jointAngles.relative = 1;
 
   pub_.publish(jointAngles);
