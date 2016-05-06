@@ -17,6 +17,7 @@
 #include <vector>
 #include <time.h>
 #include <string>
+#include <XmlRpcValue.h>
 
 namespace perlin_noise_node
 {
@@ -40,11 +41,15 @@ private:
   //! Message publisher
   ros::Publisher pub_;
 
-  std::vector<std::string> paramNames_;
+  std::vector<std::string> perlin_joints_;
 
-  std::vector<double> perlinOffset_;
+  std::vector<std::string> joint_names_;
 
-  std::vector<double> perlinParam_;
+  double speed_;
+
+  std::vector<double> perlin_offset_;
+
+  std::vector<double> perlin_param_;
 };
 
 }

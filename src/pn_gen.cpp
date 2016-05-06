@@ -8,7 +8,10 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
 {
 
   // Declare variables that can be modified by launch file or command line.
+  //
   int rate;
+  // Frequency of message publishing (seconds), default .5
+  double freq;
 
   // Seed rand
   std::srand(std::time(0));
@@ -16,60 +19,50 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
   // Initialize node parameters from launch file or command line. Use a private node handle so that multiple instances
   // of the node can be run simultaneously while using different parameters.
   ros::NodeHandle pnh("~");
-  pnh.param("rate", rate, 1);
+  pnh.getParam("freq", freq);
+  pnh.getParam("speed", speed_);
+  pnh.getParam("perlin_joints", perlin_joints_);
+  pnh.getParam("joint_names", joint_names_);
 
   // Create a publisher and name the topic.
   pub_ = nh.advertise<naoqi_bridge_msgs::JointAnglesWithSpeed>("joint_angles", 10);
 
   // Create timer.
-  timer_ = nh.createTimer(ros::Duration(.5), &PerlinNode::timerCallback, this);
+  timer_ = nh.createTimer(ros::Duration(freq), &PerlinNode::timerCallback, this);
 
   // Create filter i/o vectors
-  filter_chain_.configure(3, "perlin_params");
+  filter_chain_.configure(3, "filter_params");
 
-  // TODO these will eventually be read in from paramServer
-  paramNames_.push_back("HeadYaw");
-  paramNames_.push_back("HeadPitch");
-  // paramNames_.push_back("LShoulderPitch");
-  // paramNames_.push_back("LShoulderRoll");
+  // TODO create num offsets corresponding to size of perlin_joints
+  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
+  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
+  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
+  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
 
-
-  perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
-  perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
-  perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
-  perlinOffset_.push_back(10000*((double) rand() / (RAND_MAX)));
-
-  perlinParam_.push_back(0);
-  perlinParam_.push_back(0);
-  perlinParam_.push_back(0);
-  perlinParam_.push_back(0);
+  perlin_param_.push_back(0);
+  perlin_param_.push_back(0);
+  perlin_param_.push_back(0);
+  perlin_param_.push_back(0);
 
 }
 
 void PerlinNode::timerCallback(const ros::TimerEvent& event)
 {
 
-  int nameSize = 26;
-  std::string x[26] = {"HeadYaw", "HeadPitch", "LShoulderPitch",
-  "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw",
-  "LHand", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch",
-   "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch",
-    "RKneePitch", "RAnklePitch", "RAnkleRoll", "RShoulderPitch",
-     "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"};
-  std::vector<std::string> name(x, x + sizeof(x)/sizeof(x[0]));
-  std::vector<float> joint_angles (nameSize, 0);
+  int num_joints = 26;
+  std::vector<float> joint_angles (num_joints, 0);
 
   naoqi_bridge_msgs::JointAnglesWithSpeed jointAngles;
-  jointAngles.joint_names = name;
+  jointAngles.joint_names = joint_names_;
   jointAngles.joint_angles = joint_angles;
 
   std::vector<double> filt_in (3, 0);
   std::vector<double> filt_out (3, -1);
 
-  for(int i = 0; i < paramNames_.size(); i++) {
+  for(int i = 0; i < perlin_joints_.size(); i++) {
 
-    filt_in[0] = perlinOffset_[i] + perlinParam_[i];
-    perlinParam_[i] += 1.1;
+    filt_in[0] = perlin_offset_[i] + perlin_param_[i];
+    perlin_param_[i] += 1.1;
 
     if(filter_chain_.update(filt_in, filt_out)) {
       ROS_INFO("updated sucessfully");
@@ -77,10 +70,11 @@ void PerlinNode::timerCallback(const ros::TimerEvent& event)
       ROS_INFO("updated unsucessfully");
     }
 
+    // TODO change correct index
     jointAngles.joint_angles[i] = filt_out[0] * .75;
   }
 
-  jointAngles.speed = .025;
+  jointAngles.speed = speed_;
   jointAngles.relative = 1;
 
   pub_.publish(jointAngles);

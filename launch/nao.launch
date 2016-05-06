@@ -2,11 +2,11 @@
 <launch>
   <!-- The C++ pn_gen node will publish a message with perlinized motion. -->
   <node pkg="perlin_noise_node" type="pn_gen" name="pn_gen">
-    <param name="rate" value="1"/>
+    <rosparam command="load" file="$(find perlin_noise_node)/launch/nao.yaml" />
   </node>
 
   <!-- Load default values into Filter Chain. Add additional/custom robot launch configs below -->
-  <rosparam command="load" file="$(find perlin_noise_node)/launch/default.yaml" />
+  <rosparam command="load" file="$(find perlin_noise_node)/launch/filter.yaml" />
 
   <!-- <include file="$(find perlin_noise_node)/launch/tools.launch"/> -->
 </launch>

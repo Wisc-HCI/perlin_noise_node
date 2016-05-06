@@ -1,4 +1,4 @@
-perlin_params:
+filter_params:
     - name: perlin_noise_filter_chain
       type: PerlinNoiseDouble
       params: {perlin_seed: 10000}
