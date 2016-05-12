@@ -23,16 +23,10 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
   // Create filter i/o vectors
   filter_chain_.configure(3, "filter_params");
 
-  // TODO create num offsets corresponding to size of perlin_joints
-  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
-  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
-  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
-  perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
-
-  perlin_param_.push_back(0);
-  perlin_param_.push_back(0);
-  perlin_param_.push_back(0);
-  perlin_param_.push_back(0);
-
+  // Create offsets for each of the joints that Perlin is applied to
+  for (int i = 0; i < perlin_joints_.size(); i++) {
+    perlin_offset_.push_back(10000*((double) rand() / (RAND_MAX)));
+    perlin_param_.push_back(0);
+  }
 }
 }
