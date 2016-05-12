@@ -1,5 +1,5 @@
-#ifndef PERLIN_NOISE_NODE_PN_GEN_H
-#define PERLIN_NOISE_NODE_PN_GEN_H
+#ifndef PERLIN_NOISE_NODE_PERLIN_BASE_H
+#define PERLIN_NOISE_NODE_PERLIN_BASE_H
 
 // ROS includes.
 #include "ros/ros.h"
@@ -21,10 +21,10 @@ namespace perlin_noise_node
 class PerlinNode
 {
 protected:
-  //! Constructor.
+  //! Constructor
   PerlinNode(ros::NodeHandle nh);
 
-  //! Timer callback for publishing message.
+  //! Timer callback for publishing message (must be implemented)
   virtual void timerCallback(const ros::TimerEvent& event) = 0;
 
   //! Filter Chain
@@ -36,19 +36,25 @@ protected:
   //! Message publisher
   ros::Publisher pub_;
 
+  //! User specified joints that Perlin Noise is applied to
   std::vector<std::string> perlin_joints_;
 
+  //! All joints names (required for message being published)
   std::vector<std::string> joint_names_;
 
+  //! Frequency of message publishing
   double freq_;
 
+  //! Motion speed of robot
   double speed_;
 
+  //! Increments at fixed rate along Perlin Gradient
   std::vector<double> perlin_offset_;
 
+  //! Random value for Perlin input
   std::vector<double> perlin_param_;
 };
 
 }
 
-#endif // PERLIN_NOISE_NODE_PN_GEN_H
+#endif // PERLIN_NOISE_NODE_PERLIN_BASE_H

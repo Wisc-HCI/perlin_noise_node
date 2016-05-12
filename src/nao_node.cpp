@@ -3,7 +3,7 @@
 int main(int argc, char **argv)
 {
   // Set up ROS.
-  ros::init(argc, argv, "pn_gen");
+  ros::init(argc, argv, "nao_pn_gen");
   ros::NodeHandle nh;
 
   // Create a new perlin_noise_node::PerlinNode object.

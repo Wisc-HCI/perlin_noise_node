@@ -1,4 +1,4 @@
-#include "perlin_noise_node/pn_gen.h"
+#include "perlin_noise_node/perlin_base.h"
 
 namespace perlin_noise_node
 {

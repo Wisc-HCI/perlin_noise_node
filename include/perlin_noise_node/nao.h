@@ -1,7 +1,7 @@
 #ifndef PERLIN_NOISE_NODE_NAO_H
 #define PERLIN_NOISE_NODE_NAO_H
 
-#include "pn_gen.h"
+#include "perlin_base.h"
 
 // Nao specific includes
 #include <naoqi_bridge_msgs/JointAnglesWithSpeed.h>
