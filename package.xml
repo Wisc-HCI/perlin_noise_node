@@ -2,13 +2,12 @@
   <name>perlin_noise_node</name>
   <version>0.0.1</version>
   <description>
-    Example nodes to show how to set up publishers and subscribers while
-    using the parameter server and dynamic reconfigure and custom messages.
-    Examples for Python and C++.
+    Collection of ROS nodes that use the perlin_noise_filter package to add Perlin Noise to the motion
+    of user specified joints.
   </description>
   <author>Jake Dexheimer</author>
   <maintainer email="jdexheimer@wisc.edu">Jake Dexheimer</maintainer>
-  <license>MIT</license>
+  <license>BSD</license>
   <url>https://github.com/jakedex/perlin_noise_node</url>
 
   <buildtool_depend>catkin</buildtool_depend>
@@ -16,4 +15,5 @@
   <depend>roscpp</depend>
   <depend>filters</depend>
   <depend>std_msgs</depend>
+  <depend>naoqi_bridge_msgs</depend>
 </package>

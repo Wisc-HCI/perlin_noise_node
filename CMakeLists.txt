@@ -18,6 +18,7 @@ project(perlin_noise_node)
 set(THIS_PACKAGE_ROS_DEPS
  roscpp
  std_msgs
+ naoqi_bridge_msgs
  filters
  perlin_noise_filter
 )
@@ -29,7 +30,7 @@ find_package(catkin REQUIRED COMPONENTS ${THIS_PACKAGE_ROS_DEPS})
 ##############################################################################
 
 catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs filters perlin_noise_filter
+  CATKIN_DEPENDS roscpp std_msgs naoqi_bridge_msgs filters perlin_noise_filter
 )
 
 ##############################################################################
@@ -40,7 +41,6 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(nao_pn_gen src/perlin_base.cpp src/nao.cpp src/nao_node.cpp)
 target_link_libraries(nao_pn_gen ${catkin_LIBRARIES})
-#add_dependencies(nao node_example_gencfg node_example_generate_messages_cpp)
 
 ##############################################################################
 # Install
