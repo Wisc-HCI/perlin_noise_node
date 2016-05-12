@@ -3,7 +3,7 @@
 
 #include "pn_gen.h"
 
-// Node includes
+// Nao specific includes
 #include <naoqi_bridge_msgs/JointAnglesWithSpeed.h>
 
 namespace perlin_noise_node
@@ -11,13 +11,13 @@ namespace perlin_noise_node
 
 class Nao: public PerlinNode
 {
-  //! Intialize everything specific to this robot
-  void init();
+public:
+  //! Intialize PerlinNode along with everything specific to this robot
+  Nao(ros::NodeHandle nh);
 
   //! Timer callback for publishing message.
   void timerCallback(const ros::TimerEvent& event);
 };
-
 }
 
 #endif // PERLIN_NOISE_NODE_NAO_H

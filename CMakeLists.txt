@@ -38,7 +38,7 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(nao src/nao.cpp src/nao_node.cpp)
+add_executable(nao src/pn_gen.cpp src/nao.cpp src/nao_node.cpp)
 target_link_libraries(nao ${catkin_LIBRARIES})
 #add_dependencies(nao node_example_gencfg node_example_generate_messages_cpp)
 

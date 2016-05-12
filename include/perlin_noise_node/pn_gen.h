@@ -20,17 +20,13 @@ namespace perlin_noise_node
 
 class PerlinNode
 {
-public:
+protected:
   //! Constructor.
   PerlinNode(ros::NodeHandle nh);
-
-  //! Intialize everything specific to this robot
-  virtual void init() = 0;
 
   //! Timer callback for publishing message.
   virtual void timerCallback(const ros::TimerEvent& event) = 0;
 
-protected:
   //! Filter Chain
   filters::MultiChannelFilterChain<double> filter_chain_;
 
@@ -43,6 +39,8 @@ protected:
   std::vector<std::string> perlin_joints_;
 
   std::vector<std::string> joint_names_;
+
+  double freq_;
 
   double speed_;
 

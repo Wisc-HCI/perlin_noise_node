@@ -7,7 +7,7 @@ int main(int argc, char **argv)
   ros::NodeHandle nh;
 
   // Create a new perlin_noise_node::PerlinNode object.
-  perlin_noise_node::PerlinNode node(nh);
+  perlin_noise_node::Nao node(nh);
 
   // Let ROS handle all callbacks.
   ros::spin();
