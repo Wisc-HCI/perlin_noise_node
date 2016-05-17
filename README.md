@@ -119,10 +119,10 @@ Go to workspace src space
 cd /path/to/your/catkin_ws/src
 ```
 
-Checkout the perlin_noise_function repository
+Checkout the perlin_noise_node repository
 
 ```
-git clone https://github.com/jakedex/perlin_noise_filter
+git clone https://github.com/jakedex/perlin_noise_node
 ```
 
 Then make sure you have all dependencies installed
@@ -138,7 +138,7 @@ Now build
 catkin_make
 ```
 
-After sourcing /path/to/your/catkin_ws/devel/setup.bash you should now be able to use the perlin_noise_filter package.
+After sourcing /path/to/your/catkin_ws/devel/setup.bash you should now be able to use the perlin_noise_node package.
 
 ## License
 
