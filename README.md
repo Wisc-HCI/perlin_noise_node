@@ -46,9 +46,9 @@ rosservice call /nao_robot/pose/body_stiffness/enable "{}"
 ### New Robot Instructions
 
 New robots require the following:
-  * [perlin_base.cpp implementation](perlin_base.cpp-implementation)
-  * [Parameter Server configuration](Parameter-Server-configuration)
-  * [Launch file](Launch-file)
+  * [perlin_base.cpp implementation](#perlin_base.cpp-implementation)
+  * [Parameter Server configuration](#Parameter-Server-configuration)
+  * [Launch file](#Launch-file)
 
 #### perlin_base.cpp implementation
 
