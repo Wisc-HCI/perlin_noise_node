@@ -113,7 +113,7 @@ joint_names: ['HeadYaw', ...., 'RHand']
 
 Make sure you have sourced the correct `setup.bash` file for your ROS distribution already
 
-Go to workspace src space
+Go to workspace src directory
 
 ```
 cd /path/to/your/catkin_ws/src
