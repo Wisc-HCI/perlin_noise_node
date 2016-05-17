@@ -46,13 +46,18 @@ rosservice call /nao_robot/pose/body_stiffness/enable "{}"
 ### New Robot Instructions
 
 New robots require the following:
-  * perlin_base.cpp implementation
-  * Parameter Server configuration
-  * Launch file
+  * [perlin_base.cpp implementation](perlin_base.cpp-implementation)
+  * [Parameter Server configuration](Parameter-Server-configuration)
+  * [Launch file](Launch-file)
 
 #### perlin_base.cpp implementation
 
+`perlin_base.cpp` and it's corresponding header file, `perlin_base.h` contain the majority of setup functionality for each robot's node. This includes initializing the filter chain (perlin_noise_filter setup), and setting the node parameters contained in the robot's .launch file. `perlin_base` is also an [abstract base class](http://www.cplusplus.com/doc/tutorial/polymorphism/) that each node is to inherit from and implement it's pure virtual function, `timerCallback`.
 
+
+Essentially, `timerCallback` should contain the implementation specific code that calls the Perlin Noise filter and publishes the results in a new message.
+
+*See [nao.cpp](src/nao.cpp) for an example of implementing `perlin_base`*
 
 #### Parameter Server configuration
 
@@ -83,9 +88,23 @@ perlin_joints: ['HeadYaw', 'HeadPitch']
 joint_names: ['HeadYaw', ...., 'RHand']
 ```
 
-##### Launch file
+#### Launch file
 
 [roslaunch](http://wiki.ros.org/roslaunch) allows for easy launching of multiple ROS nodes, as well as setting parameters on the Parameter server with the YAML configuration file described above. You'll need to create a `.launch` file to launch your robot's node and set the Parameter server parameters.
+
+###### Example Configuration
+
+```xml
+<launch>
+  <!-- The C++ nao_pn_gen node will publish a message with perlinized motion. -->
+  <node pkg="perlin_noise_node" type="nao_pn_gen" name="nao_pn_gen">
+    <rosparam command="load" file="$(find perlin_noise_node)/launch/nao.yaml" />
+  </node>
+
+  <!-- Load default values into Filter Chain. Add additional/custom robot launch configs below -->
+  <rosparam command="load" file="$(find perlin_noise_node)/launch/filter.yaml" />
+</launch>
+```
 
 ## Installing
 
