@@ -9,7 +9,7 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
   // Seed rand
   std::srand(std::time(0));
 
-  // Initialize node parameters from launch file or command line. Use a private node handle so that multiple instances
+  // Initialize node parameters from launch file. Use a private node handle so that multiple instances
   // of the node can be run simultaneously while using different parameters.
   ros::NodeHandle pnh("~");
   pnh.getParam("freq", freq_);
@@ -20,7 +20,7 @@ PerlinNode::PerlinNode(ros::NodeHandle nh) :
   // Create timer.
   timer_ = nh.createTimer(ros::Duration(freq_), &PerlinNode::timerCallback, this);
 
-  // Create filter i/o vectors
+  // Initize filter parameters from launch file
   filter_chain_.configure(3, "filter_params");
 
   // Create offsets for each of the joints that Perlin is applied to
